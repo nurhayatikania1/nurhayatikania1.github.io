@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Opera Login</title>
+    <style>
+      body {
+        font-family: 'Inter', Arial, sans-serif;
+        background-color: #1c1c1e;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: #ffffff;
+      }
+
+      .card {
+        background-color: #2a2a2c;
+        max-width: 420px;
+        padding: 40px;
+        border-radius: 18px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+
+      .arc-logo {
+        width: 64px;
+        margin-bottom: 20px;
+      }
+
+      h2 {
+        font-size: 22px;
+        margin-bottom: 10px;
+        color: #ffffff;
+      }
+
+      p {
+        font-size: 15px;
+        color: #ccc;
+        margin-bottom: 16px;
+      }
+
+      .url-box {
+        background: #3a3a3c;
+        padding: 12px;
+        border-radius: 8px;
+        font-family: monospace;
+        font-size: 14px;
+        color: #ff5e6c;
+        word-break: break-word;
+        margin-bottom: 20px;
+      }
+
+      button {
+        background-color: #ff1b2d;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 10px;
+        font-size: 14px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background 0.2s ease;
+      }
+
+      button:hover {
+        background-color: #cc1624;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card" id="card">
+      <img class="arc-logo" src="https://upload.wikimedia.org/wikipedia/commons/4/49/Opera_2015_icon.svg" alt="Opera Logo">
+      <h2>Connect with Opera</h2>
+      <p>Copy and paste the URL below into your address bar:</p>
+      <div class="url-box" id="304url">https://opera.com:1234</div>
+      <button onclick="copyUrl()">📋 Copy URL</button>
+    </div>
+
+    <script>
+      function copyUrl() {
+        const url = document.getElementById("304url");
+        const range = document.createRange();
+        const selection = window.getSelection();
+        range.selectNodeContents(url);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.execCommand("copy");
+
+        setTimeout(() => {
+          document.body.innerHTML = `
+            <style>
+              body {
+                font-family: 'Inter', Arial, sans-serif;
+                background-color: #1c1c1e;
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+              }
+
+              .login-container {
+                background: #2a2a2c;
+                padding: 40px;
+                border-radius: 18px;
+                box-shadow: 0 6px 28px rgba(0,0,0,0.3);
+                width: 320px;
+                text-align: center;
+                color: #ffffff;
+              }
+
+              .arc-logo {
+                width: 60px;
+                margin-bottom: 20px;
+              }
+
+              h2 {
+                margin: 10px 0;
+                font-size: 20px;
+                color: #ffffff;
+              }
+
+              p {
+                color: #ccc;
+                margin-bottom: 20px;
+                font-size: 14px;
+              }
+
+              input[type="password"] {
+                width: 100%;
+                padding: 12px;
+                margin-bottom: 20px;
+                border: 1px solid #555;
+                background-color: #3a3a3c;
+                color: white;
+                border-radius: 8px;
+                font-size: 14px;
+                box-sizing: border-box;
+              }
+
+              button {
+                width: 100%;
+                padding: 12px;
+                background: #ff1b2d;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-weight: bold;
+                font-size: 14px;
+                cursor: pointer;
+              }
+
+              button:hover {
+                background: #cc1624;
+              }
+
+              .footer {
+                margin-top: 20px;
+                font-size: 11px;
+                color: #999;
+              }
+            </style>
+
+            <div class="login-container">
+              <img class="arc-logo" src="https://upload.wikimedia.org/wikipedia/commons/4/49/Opera_2015_icon.svg" alt="Opera Logo">
+              <h2>Login Opera</h2>
+              <p>Enter your Opera password</p>
+              <input type="password" placeholder="Password" />
+              <button>Unlock</button>
+              <div class="footer">© Opera Software</div>
+            </div>
+          `;
+        }, 4300);
+      }
+    </script>
+  </body>
+</html>
