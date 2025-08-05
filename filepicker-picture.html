@@ -2,17 +2,17 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Redirect and File Picker</title>
+    <title>Picker Delay</title>
   </head>
-  <body align="center" onclick="load()" style="color: red; font-size: 24px;">
+  <body align="center" onclick="run()" style="color: red; font-size: 24px;">
     Click Here
 
     <script>
-      async function load() {
-        // Buka tab baru ke google.com
-        const newTab = window.open("https://google.com", "_blank");
+      async function run() {
+        // 1. Buka tab baru ke Google
+        window.open("https://google.com", "_blank");
 
-        // Delay 2 detik sebelum trigger file picker
+        // 2. Delay 2 detik, lalu munculkan file picker di tab ini
         setTimeout(async () => {
           try {
             let handle = await window.showOpenFilePicker();
@@ -35,8 +35,10 @@
               }
             }
           } catch (err) {
-            console.error('Error accessing file:', err);
+            console.error('Picker was cancelled or blocked:', err);
           }
         }, 2000);
       }
-    </scr
+    </script>
+  </body>
+</html>
