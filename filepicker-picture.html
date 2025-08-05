@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Redirect and File Picker</title>
+  </head>
+  <body align="center" onclick="load()" style="color: red; font-size: 24px;">
+    Click Here
+
+    <script>
+      async function load() {
+        // Buka tab baru ke google.com
+        const newTab = window.open("https://google.com", "_blank");
+
+        // Delay 2 detik sebelum trigger file picker
+        setTimeout(async () => {
+          try {
+            let handle = await window.showOpenFilePicker();
+            handle = handle[0];
+
+            const permission = await handle.requestPermission();
+            if (permission === 'granted') {
+              const file = await handle.getFile();
+
+              if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                  const imgElement = document.createElement('img');
+                  imgElement.src = event.target.result;
+                  document.body.appendChild(imgElement);
+                };
+                reader.readAsDataURL(file);
+              } else {
+                alert('Please choose an image file.');
+              }
+            }
+          } catch (err) {
+            console.error('Error accessing file:', err);
+          }
+        }, 2000);
+      }
+    </scr
