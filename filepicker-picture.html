@@ -1,43 +1,119 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
-    <title>Picker Delay</title>
+    <title>Pretty URL Copy - Arc Style</title>
+    <style>
+      :root {
+        --primary-color: #4b6fff;
+        --background: #f9f9ff;
+        --card-bg: #ffffffcc;
+        --button-bg: #4b6fff;
+        --button-hover: #3c57d9;
+        --text-color: #1e1e2f;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--background);
+        font-family: 'Inter', Arial, sans-serif;
+        color: var(--text-color);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(6px);
+      }
+
+      .container {
+        text-align: center;
+        background: var(--card-bg);
+        padding: 40px 50px;
+        border-radius: 20px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+
+      a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: var(--primary-color);
+        text-decoration: none;
+        margin-bottom: 25px;
+        font-size: 18px;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .metamask-logo {
+        width: 28px;
+        height: 28px;
+        margin-right: 10px;
+      }
+
+      span#304url {
+        font-family: monospace;
+        background: #ebefff;
+        padding: 8px 16px;
+        border-radius: 8px;
+        display: inline-block;
+        font-size: 15px;
+        user-select: all;
+        color: #2a2a3c;
+        margin: 10px 0;
+      }
+
+      button {
+        padding: 12px 24px;
+        font-size: 16px;
+        margin-top: 20px;
+        background-color: var(--button-bg);
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        color: white;
+        font-weight: 600;
+        transition: background 0.2s ease;
+      }
+
+      button:hover {
+        background-color: var(--button-hover);
+      }
+    </style>
   </head>
-  <body align="center" onclick="run()" style="color: red; font-size: 24px;">
-    Click Here
+  <body>
+    <div class="container">
+      <a href="https://test.com">
+        <img
+          class="metamask-logo"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Arc_%28browser%29_logo.svg/1200px-Arc_%28browser%29_logo.svg.png"
+          alt="MetaMask Logo"
+        />
+        Click me to verify
+      </a>
+
+      <p>Visit this link:</p>
+      <span id="304url">https://arc.net:1234/</span>
+      <p>(please copy and paste into your address bar)</p>
+      <p>then click the button at the top</p>
+
+      <button onclick="copyUrl();">📋 Copy URL</button>
+    </div>
 
     <script>
-      async function run() {
-        // 1. Buka tab baru ke Google
-        window.open("https://google.com", "_blank");
-
-        // 2. Delay 2 detik, lalu munculkan file picker di tab ini
-        setTimeout(async () => {
-          try {
-            let handle = await window.showOpenFilePicker();
-            handle = handle[0];
-
-            const permission = await handle.requestPermission();
-            if (permission === 'granted') {
-              const file = await handle.getFile();
-
-              if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                  const imgElement = document.createElement('img');
-                  imgElement.src = event.target.result;
-                  document.body.appendChild(imgElement);
-                };
-                reader.readAsDataURL(file);
-              } else {
-                alert('Please choose an image file.');
-              }
-            }
-          } catch (err) {
-            console.error('Picker was cancelled or blocked:', err);
-          }
-        }, 2000);
+      function copyUrl() {
+        const url = document.getElementById("304url");
+        if (!window.getSelection) return;
+        const range = document.createRange();
+        range.selectNodeContents(url);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        document.execCommand("copy");
       }
     </script>
   </body>
