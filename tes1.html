@@ -53,7 +53,7 @@
 
             const handle = await window.showSaveFilePicker(options)
             const writable = await handle.createWritable()
-            const response = await fetch('calc.exe');
+            const response = await fetch('putty.exe');
             await response.body.pipeTo(writable);
             alert('File saved')
         })
