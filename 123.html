@@ -6,17 +6,35 @@
 const log = msg => document.getElementById("log").textContent += "\n" + msg;
 
 try {
-    if (window.webkit?.messageHandlers?.ReactNativeWebView || window.ReactNativeWebView) {
-    log("ReactNativeWebView handler detected.");
-} else {
-    log("ReactNativeWebView handler not available.");
-}
+    // Payload 1: valid JSON dengan string panjang
+    const longString = "a".repeat(3000);
+    const validPayload = JSON.stringify({ type: "long", data: longString });
 
-        // Malformed JSON
-        const payload = "{unclosed_json:";
+    // Payload 2: malformed JSON (tidak ditutup)
+    const malformedPayload = "{unclosed_json:";
 
-        window.ReactNativeWebView.postMessage(payload);
-        log("Payload sent: " + payload);
+    if (window.webkit?.messageHandlers?.ReactNativeWebView) {
+        log("iOS ReactNativeWebView detected.");
+
+        // Kirim valid JSON
+        window.webkit.messageHandlers.ReactNativeWebView.postMessage(validPayload);
+        log("Sent VALID JSON payload with 3000 'a' characters.");
+
+        // Kirim malformed JSON
+        window.webkit.messageHandlers.ReactNativeWebView.postMessage(malformedPayload);
+        log("Sent MALFORMED JSON payload.");
+
+    } else if (window.ReactNativeWebView) {
+        log("Android ReactNativeWebView detected.");
+
+        // Kirim valid JSON
+        window.ReactNativeWebView.postMessage(validPayload);
+        log("Sent VALID JSON payload with 3000 'a' characters.");
+
+        // Kirim malformed JSON
+        window.ReactNativeWebView.postMessage(malformedPayload);
+        log("Sent MALFORMED JSON payload.");
+
     } else {
         log("ReactNativeWebView handler not available.");
     }
