@@ -1,424 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Safe Long-String Test</title>
+  <style>
+    body { font-family: system-ui, sans-serif; padding:20px; }
+    pre { background:#f3f3f3; padding:10px; border-radius:6px; white-space:pre-wrap; max-height:300px; overflow:auto; }
+    button { margin:6px 0; padding:8px 12px; border-radius:6px; }
+    input { width:80px; }
+  </style>
+</head>
 <body>
-<pre id="log"></pre>
-<script>
-const log = msg => document.getElementById("log").textContent += "\n" + msg;
+  <h2>Safe Long-String Sender</h2>
+  <p id="status">Checking for ReactNativeWebView handler...</p>
+  <label>Length: <input id="len" type="number" value="3000" min="1" /></label>
+  <br/>
+  <button id="sendBtn">Send long string</button>
+  <pre id="log"></pre>
 
-try {
-    if (window.webkit?.messageHandlers?.ReactNativeWebView) {
-        log("ReactNativeWebView handler detected.");
+  <script>
+    const statusEl = document.getElementById('status');
+    const logEl = document.getElementById('log');
+    const sendBtn = document.getElementById('sendBtn');
+    const lenInput = document.getElementById('len');
+    function log(msg){ logEl.textContent += msg + '\n'; }
 
-        // Malformed JSON
-        const payload = "{unclosed_json:";
-
-        window.webkit.messageHandlers.ReactNativeWebView.postMessage(payload);
-        log("Payload sent: " + 
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            payload);
+    const handler = window.webkit?.messageHandlers?.ReactNativeWebView || (window.ReactNativeWebView && window.ReactNativeWebView.postMessage ? window.ReactNativeWebView : null);
+    if (handler) {
+      statusEl.textContent = "ReactNativeWebView handler detected.";
+      log("Handler found.");
     } else {
-        log("ReactNativeWebView handler not available.");
+      statusEl.textContent = "ReactNativeWebView handler not available (running in normal browser).";
+      log("Handler not found.");
     }
-} catch (e) {
-    log("JS Exception: " + e.message);
-}
-</script>
+
+    sendBtn.addEventListener('click', () => {
+      const length = Math.max(1, parseInt(lenInput.value, 10) || 3000000000);
+      const longA = 'a'.repeat(length); // <-- long string of 'a'
+      const payloadObj = { type: "test", length: length, data: longA };
+      const payload = JSON.stringify(payloadObj);
+
+      try {
+        if (handler && typeof handler.postMessage === 'function') {
+          handler.postMessage(payload);
+          log("Sent JSON payload with length " + length + ".");
+        } else {
+          log("No native handler to send to. Payload preview:\n" + payload.slice(0, 1000) + (payload.length>1000 ? "\n... (truncated)" : ""));
+        }
+      } catch (e) {
+        log("JS exception while sending: " + (e && e.message));
+      }
+    });
+  </script>
 </body>
 </html>
