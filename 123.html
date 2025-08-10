@@ -6,13 +6,16 @@
 const log = msg => document.getElementById("log").textContent += "\n" + msg;
 
 try {
-    if (window.webkit?.messageHandlers?.ReactNativeWebView) {
-        log("ReactNativeWebView handler detected.");
+    if (window.webkit?.messageHandlers?.ReactNativeWebView || window.ReactNativeWebView) {
+    log("ReactNativeWebView handler detected.");
+} else {
+    log("ReactNativeWebView handler not available.");
+}
 
         // Malformed JSON
         const payload = "{unclosed_json:";
 
-        window.webkit.messageHandlers.ReactNativeWebView.postMessage(payload);
+        window.ReactNativeWebView.postMessage(payload);
         log("Payload sent: " + payload);
     } else {
         log("ReactNativeWebView handler not available.");
