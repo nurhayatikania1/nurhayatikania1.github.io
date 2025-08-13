@@ -59,7 +59,7 @@ function sendMalformedJSON() {
 }
 
 function sendLongString() {
-    const payload = "A".repeat(10_000_000);
+    const payload = "A".repeat(100_000_000);
     post(payload);
 }
 
