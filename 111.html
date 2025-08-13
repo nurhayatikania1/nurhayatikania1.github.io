@@ -1,3 +1,7 @@
+Oke, aku tambahkan fitur **Auto Stress Test Mode** di HTML ini.
+Kalau aktif, dia akan mengirim payload berulang setiap beberapa detik sesuai yang dipilih.
+
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,18 +11,32 @@
 body { font-family: sans-serif; padding: 20px; background: #f9f9f9; }
 button { margin: 5px 0; padding: 10px 15px; font-size: 14px; }
 pre { background: #000; color: #0f0; padding: 10px; height: 200px; overflow: auto; }
+select { padding: 5px; }
 </style>
 </head>
 <body>
 
 <h2>ReactNativeWebView Crash Test</h2>
-<p>Klik salah satu tombol untuk mengirim payload ke <code>ReactNativeWebView</code> di aplikasi kamu.</p>
+<p>Klik tombol untuk kirim payload sekali, atau aktifkan <b>Auto Stress Test</b> untuk kirim terus-menerus.</p>
 
+<h3>Manual Test</h3>
 <button onclick="sendMalformedJSON()">Malformed JSON</button>
 <button onclick="sendLongString()">Super Long String</button>
 <button onclick="sendWeirdUnicode()">Weird Unicode</button>
 <button onclick="sendDeepNestedJSON()">Deep Nested JSON</button>
 <button onclick="sendBinaryData()">Binary Data</button>
+
+<h3>Auto Stress Test</h3>
+<select id="payloadType">
+  <option value="malformed">Malformed JSON</option>
+  <option value="longstring">Super Long String</option>
+  <option value="unicode">Weird Unicode</option>
+  <option value="deepnested">Deep Nested JSON</option>
+  <option value="binary">Binary Data</option>
+</select>
+<input type="number" id="interval" value="2000" min="200" step="100"> ms
+<button onclick="startAuto()">Start</button>
+<button onclick="stopAuto()">Stop</button>
 
 <pre id="log"></pre>
 
@@ -38,6 +56,7 @@ function post(msg) {
     }
 }
 
+// Payload generators
 function sendMalformedJSON() {
     const payload = "{unclosed_json";
     post(payload);
@@ -63,7 +82,47 @@ function sendBinaryData() {
     const bin = atob("/////w==");
     post(bin);
 }
+
+// Auto mode
+let autoTimer = null;
+
+function startAuto() {
+    stopAuto();
+    const type = document.getElementById("payloadType").value;
+    const interval = parseInt(document.getElementById("interval").value, 10);
+
+    autoTimer = setInterval(() => {
+        switch(type) {
+            case "malformed": sendMalformedJSON(); break;
+            case "longstring": sendLongString(); break;
+            case "unicode": sendWeirdUnicode(); break;
+            case "deepnested": sendDeepNestedJSON(); break;
+            case "binary": sendBinaryData(); break;
+        }
+    }, interval);
+
+    log(`Auto Stress Test started: ${type}, every ${interval} ms`);
+}
+
+function stopAuto() {
+    if (autoTimer) {
+        clearInterval(autoTimer);
+        autoTimer = null;
+        log("Auto Stress Test stopped.");
+    }
+}
 </script>
 
 </body>
 </html>
+```
+
+Dengan ini:
+
+* **Manual Test** → kirim payload sekali.
+* **Auto Stress Test** → pilih tipe payload + interval waktu (ms) lalu klik **Start** untuk mengirim terus-menerus.
+
+Kalau kamu mau, aku bisa tambahkan **mode campuran** yang mengacak semua payload secara bergantian biar test lebih bervariasi.
+Itu cocok buat simulasi serangan di dunia nyata.
+
+Mau aku tambahkan juga mode random itu?
