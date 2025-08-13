@@ -10,7 +10,7 @@ try {
         log("ReactNativeWebView handler detected (Android).");
 
         // Malformed JSON
-        const payload = "{ invalid: json }";
+        const payload = '\u202E\u202E\u202E';
 
         window.ReactNativeWebView.postMessage(payload);
         log("Payload sent: " + payload);
