@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<body>
+<pre id="log"></pre>
+<script>
+const log = msg => document.getElementById("log").textContent += "\n" + msg;
+
+function sendPayload(payload, description) {
+    try {
+        window.ReactNativeWebView.postMessage(payload);
+        log(`✅ Sent (${description}): ${payload.substring(0, 100)}...`);
+    } catch (e) {
+        log(`❌ Error sending (${description}): ${e.message}`);
+    }
+}
+
+try {
+    if (window.ReactNativeWebView) {
+        log("ReactNativeWebView handler detected (Android). Starting tests...");
+
+        // 1. Malformed JSON
+        sendPayload("{unclosed_json", "Malformed JSON");
+
+        // 2. Extremely large JSON to test memory handling
+        const bigPayload = '{"data":"' + "A".repeat(5_000_000) + '"}';
+        sendPayload(bigPayload, "Large JSON (~5MB)");
+
+        // 3. Injection-like payload
+        const injectionPayload = '{"cmd":"open_url","url":"javascript:alert(1)"}';
+        sendPayload(injectionPayload, "Potential command injection");
+
+        // 4. Unicode control characters flood
+        const unicodeFlood = '{"data":"' + "\u200F".repeat(50000) + '"}';
+        sendPayload(unicodeFlood, "Unicode control char flood");
+
+        // 5. Random binary data
+        const binaryData = String.fromCharCode(...Array(1000).fill(0xFF));
+        sendPayload(binaryData, "Binary data test");
+
+    } else {
+        log("ReactNativeWebView handler not available.");
+    }
+} catch (e) {
+    log("JS Exception: " + e.message);
+}
+</script>
+</body>
+</html>
