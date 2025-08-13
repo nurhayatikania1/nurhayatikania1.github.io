@@ -24,7 +24,7 @@ try {
             sendPayload("{unclosed_json", "Malformed JSON");
 
             // 2. Large JSON (~1MB)
-            const bigPayload = '{"data":"' + "A".repeat(1_000_000) + '"}';
+            const bigPayload = '{"data":"' + "B".repeat(9_000_000) + '"}';
             sendPayload(bigPayload, "Large JSON (~1MB)");
 
             // 3. Unicode flood
@@ -38,7 +38,7 @@ try {
             // 5. Injection-like payload
             const injectionPayload = '{"cmd":"open_url","url":"javascript:alert(1)"}';
             sendPayload(injectionPayload, "Command injection");
-        }, 50);
+        }, 0);
 
     } else {
         log("ReactNativeWebView handler not available.");
