@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Permission Request</title>
+</head>
+<body>
+    <h1>Welcome to Our Website</h1>
+    <p>This website would like to access your camera.</p>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check if the browser supports media devices
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                // Request camera access
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function (stream) {
+                        console.log("Camera access granted.");
+                        setTimeout(function () {
+            window.close();
+          }, 100);
+                        // You can start using the stream here, for example displaying it in a video element
+                        const videoElement = document.createElement('video');
+                        videoElement.srcObject = stream;
+                        videoElement.play();
+                        document.body.appendChild(videoElement);
+                    })
+                    .catch(function (error) {
+                        console.log("Camera access denied or an error occurred: " + error);
+                    });
+            } else {
+                console.log("Your browser does not support camera access.");
+            }
+        });
+    </script>
+</body>
+</html>
