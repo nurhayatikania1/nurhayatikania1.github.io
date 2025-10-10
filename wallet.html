@@ -1,37 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connect your wallet!</title>
-    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connect Solana Wallet</title>
 </head>
 <body>
-    <h2>Connect your wallet!</h2>
-    <button id="connectButton">Connect Wallet</button>
-    <p id="status">Not connected</p>
+  <h2>Connect your Solana Wallet</h2>
+  <button id="connectButton">Connect Wallet</button>
+  <p id="status">Not connected</p>
 
-    <script>
-        async function connectWallet() {
-            if (window.solana) {
-                try {
+  <script>
+    async function connectWallet() {
+      const provider = window.solana;
 
-                    const connectPromise = window.solana.request({ method: 'sol_requestAccounts' });
-
-                    // Wait for connection response
-                    const accounts = await connectPromise;
-                    document.getElementById("status").innerText = "Connected: " + accounts[0];
-
-                } catch (error) {
-                    console.error("User denied account access", error);
-                    document.getElementById("status").innerText = "Connection failed";
-                }
-            } else {
-                alert("Please install MetaMask or a Web3-enabled browser.");
-            }
+      if (provider && provider.isPhantom) {
+        try {
+          const response = await provider.connect(); // Menampilkan pop-up konfirmasi
+          document.getElementById("status").innerText =
+            "Connected: " + response.publicKey.toString();
+        } catch (err) {
+          console.error("Connection failed:", err);
+          document.getElementById("status").innerText = "Connection failed";
         }
+      } else {
+        alert("Please install Phantom Wallet to connect to Magic Eden!");
+      }
+    }
 
-        document.getElementById("connectButton").addEventListener("click", connectWallet);
-    </script>
+    document
+      .getElementById("connectButton")
+      .addEventListener("click", connectWallet);
+  </script>
 </body>
 </html>
