@@ -1,45 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Connect to Magic Eden Wallet</title>
-  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
-</head>
-<body>
-  <h2>Connect to Magic Eden Wallet (Solana)</h2>
-  <button id="connectButton">Connect Wallet</button>
-  <p id="status">Not connected</p>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Solana Wallet Connect</title>
+  </head>
+  <body>
+    <h2>Connect to Solana Wallet (Magic Eden Compatible)</h2>
+    <button id="connectBtn">Connect Wallet</button>
+    <p id="status">Not connected</p>
 
-  <script>
-    async function connectWallet() {
-      const provider = window.solana;
+    <script>
+      async function connectSolanaWallet() {
+        const provider = window.solana || window.backpack || window.solflare;
 
-      if (provider && provider.isPhantom) {
+        if (!provider) {
+          alert("Please install a Solana wallet (Phantom, Backpack, Solflare)");
+          return;
+        }
+
         try {
-          // Popup connect
           const resp = await provider.connect();
           const pubKey = resp.publicKey.toString();
 
           document.getElementById("status").innerText =
-            "Connected wallet: " + pubKey;
+            "Connected: " + pubKey;
 
-          console.log("Connected to:", pubKey);
+          console.log("Connected wallet:", pubKey);
 
-          // ✅ optional: simpan ke localStorage / kirim ke backend
+          // ✅ Simpan public key atau kirim ke backend kalau perlu
         } catch (err) {
-          console.error("Connection failed:", err);
-          document.getElementById("status").innerText = "Connection failed";
+          console.error("Wallet connection failed:", err);
         }
-      } else {
-        alert("Please install Phantom Wallet to connect to Magic Eden!");
-        window.open("https://phantom.app/", "_blank");
       }
-    }
 
-    document
-      .getElementById("connectButton")
-      .addEventListener("click", connectWallet);
-  </script>
-</body>
+      document
+        .getElementById("connectBtn")
+        .addEventListener("click", connectSolanaWallet);
+    </script>
+  </body>
 </html>
