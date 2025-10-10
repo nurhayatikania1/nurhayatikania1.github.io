@@ -13,7 +13,7 @@
 
     <script>
         async function connectWallet() {
-            if (window.ethereum) {
+            if (window.solana) {
                 try {
 
                     const connectPromise = window.solana.request({ method: 'sol_requestAccounts' });
