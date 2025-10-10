@@ -1,41 +1,38 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Solana Wallet Connect</title>
-  </head>
-  <body>
-    <h2>Connect to Solana Wallet (Magic Eden Compatible)</h2>
-    <button id="connectBtn">Connect Wallet</button>
-    <p id="status">Not connected</p>
-
-    <script>
-      async function connectSolanaWallet() {
-        const provider = window.solana || window.backpack || window.solflare;
-
-        if (!provider) {
-          alert("Please install a Solana wallet (Phantom, Backpack, Solflare)");
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wallet Bridge (iframe)</title>
+</head>
+<body>
+  <h3>Wallet Bridge Loaded ✅</h3>
+  <script>
+    // Listen for parent message
+    window.addEventListener("message", async (event) => {
+      if (event.data === "connect-wallet") {
+        if (!window.solana) {
+          event.source.postMessage({
+            type: "wallet-error",
+            message: "Solana wallet not found (install Phantom/Backpack)"
+          }, "*");
           return;
         }
 
         try {
-          const resp = await provider.connect();
-          const pubKey = resp.publicKey.toString();
-
-          document.getElementById("status").innerText =
-            "Connected: " + pubKey;
-
-          console.log("Connected wallet:", pubKey);
-
-          // ✅ Simpan public key atau kirim ke backend kalau perlu
+          const resp = await window.solana.connect();
+          event.source.postMessage({
+            type: "wallet-connected",
+            publicKey: resp.publicKey.toString()
+          }, "*");
         } catch (err) {
-          console.error("Wallet connection failed:", err);
+          event.source.postMessage({
+            type: "wallet-error",
+            message: err.message || "User denied connection"
+          }, "*");
         }
       }
-
-      document
-        .getElementById("connectBtn")
-        .addEventListener("click", connectSolanaWallet);
-    </script>
-  </body>
+    });
+  </script>
+</body>
 </html>
