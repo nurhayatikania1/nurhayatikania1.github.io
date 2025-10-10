@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Connect Solana Wallet</title>
+  <title>Connect to Magic Eden Wallet</title>
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
 </head>
 <body>
-  <h2>Connect your Solana Wallet</h2>
+  <h2>Connect to Magic Eden Wallet (Solana)</h2>
   <button id="connectButton">Connect Wallet</button>
   <p id="status">Not connected</p>
 
@@ -16,15 +17,23 @@
 
       if (provider && provider.isPhantom) {
         try {
-          const response = await provider.connect(); // Menampilkan pop-up konfirmasi
+          // Popup connect
+          const resp = await provider.connect();
+          const pubKey = resp.publicKey.toString();
+
           document.getElementById("status").innerText =
-            "Connected: " + response.publicKey.toString();
+            "Connected wallet: " + pubKey;
+
+          console.log("Connected to:", pubKey);
+
+          // ✅ optional: simpan ke localStorage / kirim ke backend
         } catch (err) {
           console.error("Connection failed:", err);
           document.getElementById("status").innerText = "Connection failed";
         }
       } else {
         alert("Please install Phantom Wallet to connect to Magic Eden!");
+        window.open("https://phantom.app/", "_blank");
       }
     }
 
