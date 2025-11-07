@@ -9,7 +9,7 @@ const log = t => { document.getElementById('log').textContent += t + '\n'; conso
 
 document.getElementById('go').addEventListener('click', () => {
   // 1) buka popup kosong (synchronous, direct user gesture)
-  const w = window.open('www.google.com', '_blank', 'width=600,height=400');
+  const w = window.open('https://www.google.com', '_blank', 'width=600,height=400');
 
   // 2) tulis dokumen popup langsung sehingga kita mengontrol kontennya
   const html = `
