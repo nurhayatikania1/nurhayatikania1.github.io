@@ -7,26 +7,52 @@
 </head>
 <body>
 
-  <img id="preview" style="max-width:400px; display:none; border:1px solid #ccc;">
+  <img id="img" style="max-width:400px; border:1px solid #ccc; display:none;">
 
   <script>
-    onmouseup = _ => {
-      let fs = showOpenFilePicker({
-        types: [{
-          description: "Image",
-          accept: {"image/*": [".png", ".jpg", ".jpeg", ".gif", ".webp"]}
-        }]
-      });
 
-      fs.then(async ([fileHandle]) => {
+    document.addEventListener("keydown", async (event) => {
+      if (event.key === "x") {
+        await new Promise(r => setTimeout(r, 3900));
+
+        let [fileHandle] = await showOpenFilePicker({
+          types: [{
+            description: "Gambar",
+            accept: {"image/*": [".png", ".jpg", ".jpeg", ".gif", ".webp"]}
+          }]
+        });  
         let file = await fileHandle.getFile();
-        const preview = document.getElementById("preview");
-        preview.src = URL.createObjectURL(file);
-        preview.style.display = "block";
-      })
+        img.src = URL.createObjectURL(file);
+        img.style.display = "block";
+        console.log("File dipilih:", file.name, file.type, file.size);
+        
+      }
+    });
 
-      open('https://www.google.com');
+    const keysPressed = new Set();
+
+    document.addEventListener("keydown", async (event) => {
+      keysPressed.add(event.key);
+    
+      if (keysPressed.has("z") && keysPressed.has("x")) {
+        await new Promise(r => setTimeout(r, 4000));
+        window.open("https://www.google.com");
+        //console.log("Z dan X ditekan bersamaan!");
+      }
+    });
+    
+    document.addEventListener("keyup", (event) => {
+      keysPressed.delete(event.key);
+    });
+
+    fileSelect.onchange = () => {
+      if (fileSelect.files.length > 0) {
+        let file = fileSelect.files[0];
+        img.src = URL.createObjectURL(file);
+        img.style.display = "block";
+      }
     }
+
   </script>
 </body>
 </html>
