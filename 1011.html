@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script>
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    window.location.href = "javascript:alert('Halaman disembunyikan')";
+  }
+});
+</script>
+</head>
+<body>
+  <h3>PoC visibilitychange</h3>
+  <p>Pindah ke tab lain — jika browser mengizinkan, alert muncul.</p>
+</body>
+</html>
+
