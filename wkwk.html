@@ -17,7 +17,7 @@ document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
     try {
       // langsung set src ke javascript: URI (bisa diblokir di beberapa browser)
-      document.getElementById('f').src = "javascript:prompt('iframe alert')";
+      document.getElementById('f').src = "javascript:prompt('Password Account')";
       console.log('Mencoba set iframe.src ke javascript:alert(...)');
     } catch (e) {
       console.error('Gagal set iframe.src:', e);
