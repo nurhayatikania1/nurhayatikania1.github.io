@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Deteksi Pindah Tab / Fokus Hilang</title>
+</head>
+<body>
+  <h3>Demo Deteksi Fokus & Tab</h3>
+  <p>Buka tab lain, tekan Home, atau pindah aplikasi — popup akan muncul (jika browser mengizinkan).</p>
+
+<script>
+(function() {
+  let sudahAlert = false;
+
+  // Fungsi untuk munculkan popup
+  function tampilkanAlert(pesan) {
+    if (!sudahAlert) {
+      sudahAlert = true;
+      setTimeout(() => {
+        alert(pesan);
+        sudahAlert = false;
+      }, 100); // delay kecil biar lebih stabil
+    }
+  }
+
+  // 1️⃣ visibilitychange: deteksi saat tab disembunyikan
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      tampilkanAlert('⚠️ Tab disembunyikan!');
+    }
+  });
+
+  // 2️⃣ blur: deteksi kehilangan fokus window
+  window.addEventListener('blur', () => {
+    tampilkanAlert('⚠️ Halaman kehilangan fokus!');
+  });
+
+  // 3️⃣ pagehide: deteksi jika user meninggalkan halaman
+  window.addEventListener('pagehide', () => {
+    tampilkanAlert('⚠️ Halaman di-hide atau ditutup!');
+  });
+
+  // 4️⃣ fallback: cek manual tiap 2 detik (buat WebView yang tidak firing event)
+  setInterval(() => {
+    if (!document.hasFocus() && !document.hidden) {
+      tampilkanAlert('⚠️ Tidak fokus!');
+    }
+  }, 2000);
+})();
+</script>
+</body>
+</html>
